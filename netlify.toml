@@ -7,7 +7,7 @@ ID = "RheinklangMessengerConversionBotAPI"
 # unless otherwise overridden by more specific contexts.  
 [build]
   # Default build command.
-  command = "npm install && npm run build"
+  command = "npm run compile"
   functions = "functions"
 
 [[headers]]
