@@ -1,0 +1,26 @@
+[Settings]
+# Added automatically by the Netlify CLI. It has no effect during normal 
+# Git-backed deploys.
+ID = "RheinklangMessengerConversionBotAPI"
+
+# Settings in the [build] context are global and are applied to all contexts 
+# unless otherwise overridden by more specific contexts.  
+[build]
+  # Default build command.
+  command = "npm install && npm run build"
+  functions = "functions"
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/*"
+
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+
+    # Multi-key header rules are expressed with multi-line strings.
+	cache-control = '''
+	max-age=0,
+	no-cache,
+	no-store,
+	must-revalidate'''
