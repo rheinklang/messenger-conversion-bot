@@ -7,45 +7,42 @@ import { verifyWebhook } from './hooks/verify';
 import { processHook } from './hooks/process';
 import { PRODUCTION } from './config';
 
-const app = express();
+const api = express();
 const BASE_URL = '/.netlify/functions/api';
 
 // Middleware injection
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+api.use(cors());
+api.use(bodyParser.json());
+api.use(bodyParser.urlencoded({ extended: true }));
 
 // Debugging and logging
-app.get('*', (req, res, next) => {
+api.get('*', (req, res, next) => {
     const queryKeys = Object.keys(req.query);
 
     console.log(
-        '%s %s %s %s',
+        '%s %s %s ?%s',
         req.protocol.toUpperCase(),
         req.method.toUpperCase(),
         req.path.replace(BASE_URL, ''),
-        queryKeys.length > 0 ? queryKeys.join(', ') : ''
+        queryKeys.length > 0 ? queryKeys.join(',') : ''
     );
 
     next();
 })
 
-app.get('/', (req, res) => {
-    res.json({
-        hello: "world"
-    });
+// Index access is forbidden, reject call directly
+api.get('/', (req, res) => {
+    res.sendStatus(403);
 });
 
 // Verification endpoint
-app.get(`/.netlify/functions/api/verify`, verifyWebhook);
-app.get(`/verify`, verifyWebhook);
+api.get(`/.netlify/functions/api/webhook`, verifyWebhook);
 
 // Processing endpoint
-app.post(`/.netlify/functions/api/verify`, processHook);
+api.post(`/.netlify/functions/api/webhook`, processHook);
 
 // Error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log('Error middleware: %s', err.message);
+api.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({
         error: err.message,
         url: req.url
@@ -54,5 +51,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     next(err);
 });
 
-export const handler = serverless(app);
-export default app;
+// Lambda export for netlify
+export const handler = serverless(api);
+
+// Local development only
+export default api;
