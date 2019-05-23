@@ -3,18 +3,13 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
-        "declaration": true,
+        "declaration": false,
         "noImplicitAny": true,
         "moduleResolution": "node",
-        "sourceMap": true,
+        "sourceMap": false,
         "outDir": "build",
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*",
-                "src/types/*"
-            ]
-        }
+        "baseUrl": "./",
+        "rootDir": "./src"
     },
     "include": [
         "src/**/*"

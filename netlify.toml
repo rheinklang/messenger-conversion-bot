@@ -7,7 +7,8 @@ ID = "RheinklangMessengerConversionBotAPI"
 # unless otherwise overridden by more specific contexts.  
 [build]
   command = "npm run compile"
-  functions = "functions"
+  # functions = "functions"
+  functions = "lambda"
   publish = "build"
 
 [[headers]]

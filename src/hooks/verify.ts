@@ -9,6 +9,9 @@ export const verifyWebhook: RequestHandler = (req, res) => {
     if (mode && token === VERIFY_TOKEN) {
         res.status(200).send(challenge);
     } else {
-        res.sendStatus(403);
+        res.status(403).send({
+            error: "Invalid verification token",
+            params: req.query
+        });
     }
 };
