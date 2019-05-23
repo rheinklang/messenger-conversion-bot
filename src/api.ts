@@ -37,9 +37,11 @@ api.get('/', (req, res) => {
 
 // Verification endpoint
 api.get(`/.netlify/functions/api/webhook`, verifyWebhook);
+api.get(`/webhook`, verifyWebhook);
 
 // Processing endpoint
 api.post(`/.netlify/functions/api/webhook`, processHook);
+api.post(`/webhook`, processHook);
 
 // Error handler
 api.use((err: Error, req: Request, res: Response, next: NextFunction) => {

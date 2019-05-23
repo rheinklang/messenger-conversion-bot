@@ -9,6 +9,10 @@ export const processHook: RequestHandler = (req, res) => {
 
         // Iterate over each entry - there may be multiple if batched
         body.entry.forEach((entry: { messaging: any[] }) => {
+            if (!entry.messaging) {
+                // Skip if messaging entry is emptys
+                return;
+            }
 
             // Get the webhook event. entry.messaging is an array, but 
             // will only ever contain one event, so we get index 0
